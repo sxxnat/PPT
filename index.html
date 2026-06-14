@@ -922,7 +922,7 @@
       border:1px solid rgba(255,255,255,.92);
       box-shadow:0 18px 50px rgba(55,75,150,.16), inset 0 1px 0 rgba(255,255,255,.96);
     }
-    #overview .glass::before{display:none}
+    
     #overview .glass::after{
       background:linear-gradient(135deg,rgba(255,255,255,.5),transparent 42%) !important;
       mix-blend-mode:normal !important;opacity:.55 !important;
@@ -966,7 +966,7 @@
       border:1px solid rgba(255,255,255,.92) !important;
       box-shadow:0 18px 50px rgba(55,75,150,.16), inset 0 1px 0 rgba(255,255,255,.96) !important;
     }
-    .glass::before{display:none !important}
+    .glass::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1.4px;display:block !important;background:linear-gradient(160deg,rgba(255,255,255,.95) 0%,rgba(255,255,255,.35) 22%,rgba(180,200,255,0) 46%,rgba(180,200,255,0) 58%,rgba(255,255,255,.4) 80%,rgba(255,255,255,.95) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
     .glass::after{
       background:linear-gradient(135deg,rgba(255,255,255,.5),transparent 42%) !important;
       mix-blend-mode:normal !important;opacity:.5 !important;
@@ -988,6 +988,13 @@
     }
     .tabBtn.active{background:linear-gradient(135deg,var(--teal),var(--blue)) !important;color:#fff !important}
     .scaleMethod.spark .barFill{background:linear-gradient(90deg,var(--blue),var(--teal)) !important}
+
+    /* v2: shader visibility + line-reveal titles (default fonts only) */
+    #overview .webglBox{opacity:.7 !important}
+    .rv{overflow:hidden;padding-bottom:.08em}
+    .rvIn{display:block;transform:translateY(112%);opacity:0;
+      transition:transform 1s cubic-bezier(.16,1,.3,1),opacity 1s cubic-bezier(.16,1,.3,1)}
+    .rv.shown .rvIn{transform:translateY(0);opacity:1}
   </style>
 </head>
 <body>
@@ -1003,7 +1010,7 @@
 
   <section class="section" id="overview" data-title="프로젝트 개요">
     <div class="scaleShell">
-      <div class="webglBox" id="heroWebgl"><div class="webglFallback"></div></div>
+      <div class="webglBox" id="heroWebgl"><canvas id="coverShader" style="width:100%;height:100%;display:block"></canvas></div>
       <div class="stageInner split">
         <div class="heroCopy fadeItem">
           <div class="kicker">00 · 프로젝트 개요 및 문제 정의</div>
@@ -1457,9 +1464,9 @@ function setMetric(m){
   renderLegend();
 }
 
-Promise.resolve([
-  window.__GEO,
-  window.__MAP
+Promise.all([
+  fetch('seoul_heatmap_sample/data/seoul_dong_heatmap.geojson').then(r=>r.json()),
+  fetch('section_map_data.json').then(r=>r.json())
 ]).then(function(res){
   geo=res[0]; DATA=res[1].byCode; computeRanges();
   layer=L.geoJSON(geo,{style:styleOf,onEachFeature:onEach}).addTo(map);
@@ -2058,7 +2065,12 @@ LEFT JOIN population_processed p USING (행정동_코드, 기준_년분기_코�
     }
 
     async function loadData(){
-      deckData = FALLBACK;
+      try{
+        const res = await fetch('seoul_interactive_deck_data.json', {cache:'no-store'});
+        if(res.ok) deckData = await res.json();
+      }catch(err){
+        deckData = FALLBACK;
+      }
       fillNumbers();
       renderKTabs();
       drawKChart();
@@ -2173,5 +2185,39 @@ void main(){
     }
     initThree();
   </script>
+
+<script>
+(function(){
+  // cover shader (light cool flowing fluted glass) — single vanilla GLSL, lightweight
+  var cv=document.getElementById('coverShader'); if(!cv) return;
+  var gl=cv.getContext('webgl'); if(!gl) return;
+  function rs(){var b=cv.getBoundingClientRect();cv.width=Math.max(2,b.width)*Math.min(devicePixelRatio,2);cv.height=Math.max(2,b.height)*Math.min(devicePixelRatio,2);gl.viewport(0,0,cv.width,cv.height);}
+  rs(); addEventListener('resize',rs);
+  var vs='attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+  var fs='precision highp float;uniform vec2 u_res;uniform float u_time;'+
+    'void main(){vec2 uv=gl_FragCoord.xy/u_res.xy;float t=u_time*0.06;'+
+    'float flow=sin(uv.x*3.0+t)*0.5+sin(uv.y*2.2-t*0.8)*0.5;'+
+    'float ribs=sin(uv.x*46.0+sin(uv.y*3.0+t)*1.6);ribs=smoothstep(-0.1,0.9,ribs);'+
+    'vec3 cB=vec3(0.80,0.86,1.0),cL=vec3(0.90,0.86,0.99),cM=vec3(0.84,0.97,0.94);'+
+    'vec3 col=mix(cB,cL,clamp(uv.x+flow*0.25,0.,1.));col=mix(col,cM,clamp(uv.y*0.6+flow*0.2,0.,1.));'+
+    'col=mix(vec3(0.965,0.975,1.0),col,0.55);col+=ribs*0.05;gl_FragColor=vec4(col,1.0);}';
+  function mk(t,s){var o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);return o;}
+  var pr=gl.createProgram();gl.attachShader(pr,mk(gl.VERTEX_SHADER,vs));gl.attachShader(pr,mk(gl.FRAGMENT_SHADER,fs));gl.linkProgram(pr);gl.useProgram(pr);
+  var b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+  var lp=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(lp);gl.vertexAttribPointer(lp,2,gl.FLOAT,false,0,0);
+  var uR=gl.getUniformLocation(pr,'u_res'),uT=gl.getUniformLocation(pr,'u_time'),t0=performance.now();
+  (function fr(){gl.uniform2f(uR,cv.width,cv.height);gl.uniform1f(uT,(performance.now()-t0)/1000);gl.drawArrays(gl.TRIANGLES,0,3);requestAnimationFrame(fr);})();
+
+  // line-reveal on section titles
+  document.querySelectorAll('.section h1, .section h2').forEach(function(h){
+    h.classList.add('rv');
+    var sp=document.createElement('span'); sp.className='rvIn';
+    while(h.firstChild) sp.appendChild(h.firstChild);
+    h.appendChild(sp);
+  });
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('shown');io.unobserve(e.target);}});},{threshold:0.15});
+  document.querySelectorAll('.rv').forEach(function(h){io.observe(h);});
+})();
+</script>
 </body>
 </html>

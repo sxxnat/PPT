@@ -1,0 +1,655 @@
+{
+  "summary": {
+    "latestQuarter": 20254,
+    "dongCount": 425,
+    "rawRows": 67113,
+    "clusterRows": 1700,
+    "industryRows": 17386,
+    "recommendationRows": 2122,
+    "variables": 106,
+    "sklearnTotal": 1.259,
+    "sparkTotal": 186.265,
+    "sklearnRam": 361.7,
+    "sparkRam": 3007.9,
+    "dongK": 3,
+    "dongSilhouette": 0.467,
+    "industryK": 4,
+    "industrySilhouette": 0.6564
+  },
+  "processComparison": [
+    {
+      "method": "기존 분석(pandas + sklearn)",
+      "setup": 0.0,
+      "pipeline": 1.259,
+      "total": 1.259,
+      "ramIncrease": 56.6,
+      "peakRam": 361.7,
+      "rawRows": 67113,
+      "clusterRows": 1700,
+      "variables": 106,
+      "inertia": 109429.2,
+      "silhouette": 0.467
+    },
+    {
+      "method": "빅데이터 분석(PySpark MLlib)",
+      "setup": 15.357,
+      "pipeline": 170.907,
+      "total": 186.265,
+      "ramIncrease": 2658.5,
+      "peakRam": 3007.9,
+      "rawRows": 67113,
+      "clusterRows": 1700,
+      "variables": 106,
+      "inertia": 109452.1,
+      "silhouette": 0.663
+    }
+  ],
+  "clusterComparison": [
+    {
+      "name": "행정동-분기 상권 유형 분석",
+      "unit": "행정동 + 분기",
+      "purpose": "행정동 전체 상권 체질 분류",
+      "rows": 1700,
+      "variables": 106,
+      "k": 3,
+      "silhouette": 0.467,
+      "usage": "대형 중심상권, 중간 혼합상권, 소규모 생활상권 등 유형 해석"
+    },
+    {
+      "name": "행정동-업종 보완 분석",
+      "unit": "행정동 + 업종",
+      "purpose": "행정동별 추천 업종 도출",
+      "rows": 17386,
+      "variables": 20,
+      "k": 4,
+      "silhouette": 0.6564,
+      "usage": "업종별 매출 효율, 존속률, 폐업 위험을 반영한 TOP5 추천"
+    }
+  ],
+  "kDong": [
+    {
+      "k": 2,
+      "inertia": 131025.4,
+      "silhouette": 0.6172
+    },
+    {
+      "k": 3,
+      "inertia": 109429.2,
+      "silhouette": 0.467
+    },
+    {
+      "k": 4,
+      "inertia": 100401.8,
+      "silhouette": 0.1926
+    },
+    {
+      "k": 5,
+      "inertia": 92413.4,
+      "silhouette": 0.1901
+    },
+    {
+      "k": 6,
+      "inertia": 86671.1,
+      "silhouette": 0.1599
+    },
+    {
+      "k": 7,
+      "inertia": 82971.6,
+      "silhouette": 0.1572
+    },
+    {
+      "k": 8,
+      "inertia": 79706.0,
+      "silhouette": 0.1816
+    },
+    {
+      "k": 9,
+      "inertia": 76959.9,
+      "silhouette": 0.1589
+    },
+    {
+      "k": 10,
+      "inertia": 74214.7,
+      "silhouette": 0.0775
+    }
+  ],
+  "kIndustry": [
+    {
+      "k": 2,
+      "inertia": 282524.4,
+      "silhouette": 0.6663
+    },
+    {
+      "k": 3,
+      "inertia": 257783.8,
+      "silhouette": 0.6672
+    },
+    {
+      "k": 4,
+      "inertia": 236582.6,
+      "silhouette": 0.6564
+    },
+    {
+      "k": 5,
+      "inertia": 215781.4,
+      "silhouette": 0.5325
+    },
+    {
+      "k": 6,
+      "inertia": 203008.9,
+      "silhouette": 0.157
+    },
+    {
+      "k": 7,
+      "inertia": 184256.6,
+      "silhouette": 0.1595
+    },
+    {
+      "k": 8,
+      "inertia": 174650.1,
+      "silhouette": 0.1675
+    },
+    {
+      "k": 9,
+      "inertia": 160365.5,
+      "silhouette": 0.167
+    },
+    {
+      "k": 10,
+      "inertia": 152987.9,
+      "silhouette": 0.1818
+    }
+  ],
+  "scaling": [
+    {
+      "method": "sklearn",
+      "multiple": 1,
+      "rows": 1700,
+      "time": 0.171,
+      "ramIncrease": 0.3,
+      "peakRam": 3001.8,
+      "growth": 1.0
+    },
+    {
+      "method": "PySpark",
+      "multiple": 1,
+      "rows": 1700,
+      "time": 12.264,
+      "ramIncrease": 176.0,
+      "peakRam": 3177.8,
+      "growth": 1.0
+    },
+    {
+      "method": "sklearn",
+      "multiple": 10,
+      "rows": 17000,
+      "time": 0.734,
+      "ramIncrease": 3.9,
+      "peakRam": 3181.7,
+      "growth": 4.302
+    },
+    {
+      "method": "PySpark",
+      "multiple": 10,
+      "rows": 17000,
+      "time": 11.98,
+      "ramIncrease": 89.5,
+      "peakRam": 3271.0,
+      "growth": 0.977
+    },
+    {
+      "method": "sklearn",
+      "multiple": 50,
+      "rows": 85000,
+      "time": 3.414,
+      "ramIncrease": 103.1,
+      "peakRam": 3374.1,
+      "growth": 20.015
+    },
+    {
+      "method": "PySpark",
+      "multiple": 50,
+      "rows": 85000,
+      "time": 15.931,
+      "ramIncrease": 3.7,
+      "peakRam": 3274.5,
+      "growth": 1.299
+    },
+    {
+      "method": "sklearn",
+      "multiple": 200,
+      "rows": 340000,
+      "time": 14.052,
+      "ramIncrease": 412.5,
+      "peakRam": 3611.0,
+      "growth": 82.386
+    },
+    {
+      "method": "PySpark",
+      "multiple": 200,
+      "rows": 340000,
+      "time": 34.164,
+      "ramIncrease": 246.9,
+      "peakRam": 3445.3,
+      "growth": 2.786
+    },
+    {
+      "method": "sklearn",
+      "multiple": 1177,
+      "rows": 2000900,
+      "time": 91.018,
+      "ramIncrease": 2427.2,
+      "peakRam": 5871.9,
+      "growth": 533.642
+    },
+    {
+      "method": "PySpark",
+      "multiple": 1177,
+      "rows": 2000900,
+      "time": 166.701,
+      "ramIncrease": 3614.5,
+      "peakRam": 6907.6,
+      "growth": 13.593
+    }
+  ],
+  "clusters": [
+    {
+      "id": 0,
+      "quarterRows": 214,
+      "dongCountLatest": 52,
+      "revenueEok": 1833.0,
+      "population": 41535.7,
+      "stores": 2566.1,
+      "weekendShare": 0.217,
+      "consumerSalesRatio": 9.345
+    },
+    {
+      "id": 1,
+      "quarterRows": 1464,
+      "dongCountLatest": 367,
+      "revenueEok": 343.3,
+      "population": 20727.7,
+      "stores": 701.5,
+      "weekendShare": 0.237,
+      "consumerSalesRatio": 9.943
+    },
+    {
+      "id": 2,
+      "quarterRows": 22,
+      "dongCountLatest": 6,
+      "revenueEok": 6503.4,
+      "population": 64310.6,
+      "stores": 5479.6,
+      "weekendShare": 0.285,
+      "consumerSalesRatio": 30.64
+    }
+  ],
+  "industryProfiles": [
+    {
+      "cluster": 0,
+      "count": 16610,
+      "salesEok": 56.0,
+      "storeSalesEok": 2.2,
+      "survival": 98.9,
+      "closeRate": 2.628,
+      "quality": 4.0,
+      "type": "양호 후보군"
+    },
+    {
+      "cluster": 1,
+      "count": 669,
+      "salesEok": 1.6,
+      "storeSalesEok": 0.3,
+      "survival": 47.0,
+      "closeRate": 1.416,
+      "quality": -3.0,
+      "type": "저성과/위험 후보군"
+    },
+    {
+      "cluster": 2,
+      "count": 9,
+      "salesEok": 11828.4,
+      "storeSalesEok": 12.3,
+      "survival": 100.0,
+      "closeRate": 1.583,
+      "quality": 9.0,
+      "type": "고성과 안정 후보군"
+    },
+    {
+      "cluster": 3,
+      "count": 98,
+      "salesEok": 1.3,
+      "storeSalesEok": 0.4,
+      "survival": 25.0,
+      "closeRate": 0.36,
+      "quality": 0.0,
+      "type": "주의 후보군"
+    }
+  ],
+  "recommendations": [
+    {
+      "code": "11230545",
+      "dong": "제기동",
+      "industry": "청과상",
+      "score": 0.758,
+      "type": "고성과 안정 후보군",
+      "salesEok": 29663.2,
+      "storeSalesEok": 40.1,
+      "survival": 100.0,
+      "transport": 1379035,
+      "population": 31042
+    },
+    {
+      "code": "11710631",
+      "dong": "가락1동",
+      "industry": "반찬가게",
+      "score": 0.687,
+      "type": "양호 후보군",
+      "salesEok": 11876.8,
+      "storeSalesEok": 137.3,
+      "survival": 100.0,
+      "transport": 2556350,
+      "population": 29928
+    },
+    {
+      "code": "11590520",
+      "dong": "노량진2동",
+      "industry": "수산물판매",
+      "score": 0.661,
+      "type": "고성과 안정 후보군",
+      "salesEok": 26838.1,
+      "storeSalesEok": 36.1,
+      "survival": 100.0,
+      "transport": 443176,
+      "population": 15463
+    },
+    {
+      "code": "11710680",
+      "dong": "잠실3동",
+      "industry": "완구",
+      "score": 0.648,
+      "type": "양호 후보군",
+      "salesEok": 711.6,
+      "storeSalesEok": 158.1,
+      "survival": 100.0,
+      "transport": 819426,
+      "population": 48436
+    },
+    {
+      "code": "11545510",
+      "dong": "가산동",
+      "industry": "일반의류",
+      "score": 0.593,
+      "type": "고성과 안정 후보군",
+      "salesEok": 20227.1,
+      "storeSalesEok": 19.2,
+      "survival": 100.0,
+      "transport": 5358465,
+      "population": 64182
+    },
+    {
+      "code": "11590510",
+      "dong": "노량진1동",
+      "industry": "수산물판매",
+      "score": 0.553,
+      "type": "양호 후보군",
+      "salesEok": 9079.7,
+      "storeSalesEok": 63.5,
+      "survival": 100.0,
+      "transport": 3093952,
+      "population": 34262
+    },
+    {
+      "code": "11320700",
+      "dong": "방학2동",
+      "industry": "의료기기",
+      "score": 0.545,
+      "type": "양호 후보군",
+      "salesEok": 598.2,
+      "storeSalesEok": 99.7,
+      "survival": 100.0,
+      "transport": 332663,
+      "population": 9972
+    },
+    {
+      "code": "11170625",
+      "dong": "한강로동",
+      "industry": "가전제품",
+      "score": 0.526,
+      "type": "양호 후보군",
+      "salesEok": 7038.4,
+      "storeSalesEok": 49.6,
+      "survival": 100.0,
+      "transport": 8100121,
+      "population": 54599
+    },
+    {
+      "code": "11140540",
+      "dong": "회현동",
+      "industry": "육류판매",
+      "score": 0.525,
+      "type": "양호 후보군",
+      "salesEok": 954.4,
+      "storeSalesEok": 73.4,
+      "survival": 100.0,
+      "transport": 12872731,
+      "population": 29910
+    },
+    {
+      "code": "11560620",
+      "dong": "양평2동",
+      "industry": "의약품",
+      "score": 0.516,
+      "type": "양호 후보군",
+      "salesEok": 1394.0,
+      "storeSalesEok": 66.4,
+      "survival": 100.0,
+      "transport": 914103,
+      "population": 26078
+    },
+    {
+      "code": "11710710",
+      "dong": "잠실6동",
+      "industry": "일반의류",
+      "score": 0.513,
+      "type": "양호 후보군",
+      "salesEok": 7270.6,
+      "storeSalesEok": 28.7,
+      "survival": 100.0,
+      "transport": 9415512,
+      "population": 42759
+    },
+    {
+      "code": "11350625",
+      "dong": "중계2·3동",
+      "industry": "편의점",
+      "score": 0.511,
+      "type": "양호 후보군",
+      "salesEok": 65.6,
+      "storeSalesEok": 65.6,
+      "survival": 100.0,
+      "transport": 1361386,
+      "population": 30089
+    },
+    {
+      "code": "11740690",
+      "dong": "둔촌1동",
+      "industry": "편의점",
+      "score": 0.51,
+      "type": "양호 후보군",
+      "salesEok": 63.0,
+      "storeSalesEok": 31.5,
+      "survival": 100.0,
+      "transport": 1382308,
+      "population": 25059
+    },
+    {
+      "code": "11545610",
+      "dong": "독산1동",
+      "industry": "육류판매",
+      "score": 0.498,
+      "type": "양호 후보군",
+      "salesEok": 7488.4,
+      "storeSalesEok": 25.4,
+      "survival": 100.0,
+      "transport": 1682449,
+      "population": 40046
+    },
+    {
+      "code": "11260580",
+      "dong": "상봉1동",
+      "industry": "패스트푸드점",
+      "score": 0.498,
+      "type": "양호 후보군",
+      "salesEok": 175.0,
+      "storeSalesEok": 58.3,
+      "survival": 100.0,
+      "transport": 588133,
+      "population": 16664
+    },
+    {
+      "code": "11680750",
+      "dong": "수서동",
+      "industry": "편의점",
+      "score": 0.495,
+      "type": "양호 후보군",
+      "salesEok": 347.1,
+      "storeSalesEok": 49.6,
+      "survival": 100.0,
+      "transport": 2212656,
+      "population": 24367
+    },
+    {
+      "code": "11260620",
+      "dong": "묵1동",
+      "industry": "신발",
+      "score": 0.493,
+      "type": "양호 후보군",
+      "salesEok": 380.3,
+      "storeSalesEok": 60.9,
+      "survival": 100.0,
+      "transport": 523432,
+      "population": 24448
+    },
+    {
+      "code": "11470580",
+      "dong": "신월3동",
+      "industry": "편의점",
+      "score": 0.492,
+      "type": "양호 후보군",
+      "salesEok": 57.4,
+      "storeSalesEok": 57.4,
+      "survival": 100.0,
+      "transport": 297824,
+      "population": 12626
+    }
+  ],
+  "focusDongs": [
+    {
+      "dong": "제기동",
+      "items": [
+        {
+          "rank": 1,
+          "industry": "청과상",
+          "score": 0.758,
+          "type": "고성과 안정 후보군"
+        },
+        {
+          "rank": 2,
+          "industry": "편의점",
+          "score": 0.466,
+          "type": "양호 후보군"
+        },
+        {
+          "rank": 3,
+          "industry": "노래방",
+          "score": 0.452,
+          "type": "양호 후보군"
+        },
+        {
+          "rank": 4,
+          "industry": "미곡판매",
+          "score": 0.451,
+          "type": "양호 후보군"
+        },
+        {
+          "rank": 5,
+          "industry": "육류판매",
+          "score": 0.437,
+          "type": "양호 후보군"
+        }
+      ]
+    },
+    {
+      "dong": "가락1동",
+      "items": [
+        {
+          "rank": 1,
+          "industry": "반찬가게",
+          "score": 0.687,
+          "type": "양호 후보군"
+        },
+        {
+          "rank": 2,
+          "industry": "미곡판매",
+          "score": 0.513,
+          "type": "양호 후보군"
+        },
+        {
+          "rank": 3,
+          "industry": "슈퍼마켓",
+          "score": 0.472,
+          "type": "양호 후보군"
+        },
+        {
+          "rank": 4,
+          "industry": "육류판매",
+          "score": 0.468,
+          "type": "양호 후보군"
+        },
+        {
+          "rank": 5,
+          "industry": "편의점",
+          "score": 0.448,
+          "type": "양호 후보군"
+        }
+      ]
+    },
+    {
+      "dong": "노량진2동",
+      "items": [
+        {
+          "rank": 1,
+          "industry": "수산물판매",
+          "score": 0.661,
+          "type": "고성과 안정 후보군"
+        },
+        {
+          "rank": 2,
+          "industry": "육류판매",
+          "score": 0.474,
+          "type": "양호 후보군"
+        },
+        {
+          "rank": 3,
+          "industry": "시계및귀금속",
+          "score": 0.44,
+          "type": "양호 후보군"
+        },
+        {
+          "rank": 4,
+          "industry": "편의점",
+          "score": 0.439,
+          "type": "양호 후보군"
+        },
+        {
+          "rank": 5,
+          "industry": "일반교습학원",
+          "score": 0.437,
+          "type": "양호 후보군"
+        }
+      ]
+    }
+  ],
+  "sourceFolder": "내 자료\\분석결과\\통합_상권유형_업종추천_최종결과_20260613_140708"
+}
